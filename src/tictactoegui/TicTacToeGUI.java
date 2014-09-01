@@ -7,15 +7,14 @@
 package tictactoegui;
 
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Ellipse;
-import javafx.scene.paint.Color;
+import javafx.scene.image.ImageView;
 
 /**
  *
@@ -44,6 +43,7 @@ public class TicTacToeGUI extends Application {
         BorderPane borderPane = new BorderPane();
         borderPane.setCenter(pane);
         borderPane.setBottom(lblStatus);
+        BorderPane.setAlignment(lblStatus, Pos.CENTER);
 
         // Create a scene and place it in the stage
         Scene scene = new Scene(borderPane, 450, 170);
@@ -100,14 +100,14 @@ public class TicTacToeGUI extends Application {
     }
     
     // An inner class for a cell
-    public class Cell extends Pane {
+    public class Cell extends StackPane {
         // Token used for this cell
         private char token = ' ';
 
         public Cell() {
             setStyle("-fx-border-color: black");
             this.setPrefSize(2000, 2000);
-            this.setOnMouseClicked(e -> handleMouseClick());
+            this.setOnMouseClicked(e -> handleMouseClick());            
         }
         
         /** 
@@ -124,35 +124,19 @@ public class TicTacToeGUI extends Application {
          */
         public void setToken(char c) {
             token = c;
-            if (token == 'X') {
-                Line line1 = new Line(10, 10,
-                    this.getWidth() - 10, this.getHeight() - 10);
-                line1.endXProperty().bind(this.widthProperty().subtract(10));
-                line1.endYProperty().bind(this.heightProperty().subtract(10));
-                Line line2 = new Line(10, this.getHeight() - 10,
-                    this.getWidth() - 10, 10);
-                line2.startYProperty().bind(
-                    this.heightProperty().subtract(10));
-                line2.endXProperty().bind(this.widthProperty().subtract(10));
-            
-                // Add the lines to the pane
-                this.getChildren().addAll(line1, line2);
+            if (token == 'X') {    
+                // Add the 'x' to the pane
+                ImageView ivx = new ImageView("image/x.gif");
+                ivx.fitWidthProperty().bind(this.widthProperty().divide(2));
+                ivx.fitHeightProperty().bind(this.heightProperty().divide(2));
+                this.getChildren().add(ivx);              
             }
             else if (token == 'O') {
-                Ellipse ellipse = new Ellipse(this.getWidth() / 2,
-                    this.getHeight() / 2, this.getWidth() / 2 - 10,
-                    this.getHeight() / 2 - 10);
-                ellipse.centerXProperty().bind(
-                    this.widthProperty().divide(2));
-                ellipse.centerYProperty().bind(
-                    this.heightProperty().divide(2));
-                ellipse.radiusXProperty().bind(
-                    this.widthProperty().divide(2).subtract(10));            
-                ellipse.radiusYProperty().bind(
-                    this.heightProperty().divide(2).subtract(10));
-                ellipse.setStroke(Color.BLACK);
-                ellipse.setFill(Color.WHITE);
-                getChildren().add(ellipse); // Add the ellipse to the pane
+                // Add the 'o' to the pane
+                ImageView ivy = new ImageView("image/o.gif");
+                ivy.fitWidthProperty().bind(this.widthProperty().divide(2));
+                ivy.fitHeightProperty().bind(this.heightProperty().divide(2));
+                this.getChildren().add(ivy);
             }
         }
         
